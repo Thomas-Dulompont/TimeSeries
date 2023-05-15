@@ -3,6 +3,7 @@
 ## Contexte
 
 Nous avons été contacter par le CACF pour analyser les flux des relations clients.
+
 **Objectifs :**
 - Analyser les flux
 - les caractériser 
