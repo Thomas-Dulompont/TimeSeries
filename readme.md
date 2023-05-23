@@ -13,4 +13,4 @@ Nous avons été contacter par le CACF pour analyser les flux des relations clie
 
 ## Données
 
-Les données ont étaient fournis par une équipe du CACF, elles sont anonymisées et modifiée.
+Les données ont étaient fournis par une équipe du CACF, elles sont anonymisées et modifiées.
