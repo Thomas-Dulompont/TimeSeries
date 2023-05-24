@@ -1,5 +1,6 @@
 import datetime
 import holidays
+from datetime import datetime, timedelta
 
 def is_ferie(date):
     date_obj = datetime.datetime.strptime(date, "%Y-%m-%d").date()
@@ -46,3 +47,99 @@ def is_vacances(date):
         if debut <= date <= fin:
             return True
     return False
+
+import datetime
+
+def est_date_soldes(date):
+    # Conversion de la date en objets datetime
+    date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
+    
+    # Vérification pour les soldes d'hiver
+    hiver_debut = premier_mercredi(date.year, 1)  # Calcul du premier mercredi de janvier
+    hiver_fin = hiver_debut + datetime.timedelta(weeks=6)  # Ajout de 6 semaines
+    
+    if hiver_debut <= date < hiver_fin:
+        return 1
+    
+    # Vérification pour les soldes d'été
+    ete_debut = dernier_mercredi(date.year, 6)  # Calcul du dernier mercredi de juin
+    ete_fin = ete_debut + datetime.timedelta(weeks=6)  # Ajout de 6 semaines
+    
+    if ete_debut <= date < ete_fin:
+        return 1
+    
+    return 0
+
+def premier_mercredi(annee, mois):
+    jour = 1  # Commencer avec le premier jour du mois
+    date = datetime.date(annee, mois, jour)
+    
+    # Trouver le premier mercredi du mois
+    while date.weekday() != 2:  # 2 représente le mercredi (lundi = 0, mardi = 1, ...)
+        jour += 1
+        date = datetime.date(annee, mois, jour)
+    
+    return date
+
+def dernier_mercredi(annee, mois):
+    jour = dernier_jour_mois(annee, mois)  # Commencer avec le dernier jour du mois
+    date = datetime.date(annee, mois, jour)
+    
+    # Trouver le dernier mercredi du mois
+    while date.weekday() != 2:  # 2 représente le mercredi (lundi = 0, mardi = 1, ...)
+        jour -= 1
+        date = datetime.date(annee, mois, jour)
+    
+    return date
+
+def dernier_jour_mois(annee, mois):
+    if mois == 12:  # Décembre
+        return 31
+    
+    return (datetime.date(annee, mois + 1, 1) - datetime.timedelta(days=1)).day
+
+def trouver_saison(date):
+    mois = date.month
+
+    if mois in [12,1,2]:
+        return "hiver"
+    if mois in [3,4,5]:
+        return "printemps"
+    if mois in [6,7,8]:
+        return "ete"
+    if mois in [9,10,11]:
+        return "automne"
+    else:
+        return "error"
+
+def est_veille_ferie(date):
+    # Créer l'objet des jours fériés correspondant au pays souhaité
+    jours_feries = holidays.France()
+
+    # Convertir la date donnée en format YYYY-MM-DD en objet de type date
+    date_obj = datetime.datetime.strptime(date, '%Y-%m-%d').date()
+
+    # Vérifier si la date suivante est un jour férié
+    date_suivante = date_obj + timedelta(days=1)
+    if date_suivante in jours_feries:
+        return 1
+
+    # Si la date précédente et la date suivante ne sont pas des jours fériés
+    return 0
+
+def est_lendemain_ferie(date):
+    # Créer l'objet des jours fériés correspondant au pays souhaité
+    jours_feries = holidays.France()
+
+    # Convertir la date donnée en format YYYY-MM-DD en objet de type date
+    date_obj = datetime.datetime.strptime(date, '%Y-%m-%d').date()
+
+     # Vérifier si la date précédente est un jour férié
+    date_precedente = date_obj - timedelta(days=1)
+    if date_precedente in jours_feries:
+        return 1
+
+    # Si la date précédente et la date suivante ne sont pas des jours fériés
+    return 0
+
+
